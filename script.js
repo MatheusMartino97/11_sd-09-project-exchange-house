@@ -15,21 +15,57 @@ const handleRates = (ratesData) => {
   });
 }
 
-const fetchCurrency = (currency) => {
-  const endpoint = `https://api.ratesapi.io/api/latest?base=${currency}`;
-  
-  fetch(endpoint)
-    .then((response) => response.json())
-    .then((object) => { 
-      if (object.error) {
-        throw new Error(object.error);
-      }
+const handleRatesBTC = (ratesData) => {
+  const currencyList = document.querySelector('#currency-list');
 
-      handleRates(object);
+  const entries = Object.entries(ratesData.bpi);
+
+  console.log(entries)
+  
+  entries.forEach((array) => {
+    const [ currency, rate ] = array;
+
+    const formattedRate = Math.round(rate.rate_float * 100) / 100;
+    
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${currency}:</strong> ${formattedRate}`
+
+    currencyList.appendChild(li);
+  });
+}
+
+const fetchBTC = () => {
+  const endpointBTC = 'https://api.coindesk.com/v1/bpi/currentprice.json'
+  
+  fetch(endpointBTC)
+    .then((response) => response.json())
+    .then((object) => {
+      handleRatesBTC(object)
     })
     .catch((error) => {
-      window.alert(error);
-    });
+      window.alert(error)
+    })
+}
+
+const fetchCurrency = (currency) => {
+  if (currency === 'BTC') {
+    fetchBTC()
+  } else {
+    const endpoint = `https://api.ratesapi.io/api/latest?base=${currency}`;
+  
+    fetch(endpoint)
+      .then((response) => response.json())
+      .then((object) => { 
+        if (object.error) {
+          throw new Error(object.error);
+        }
+        
+        handleRates(object);
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
 }
 
 const fetchCurrencyAsyncAwait = async (currency) => {
@@ -65,7 +101,7 @@ const handleSearchEvent = () => {
 
   clearList();
 
-  fetchCurrencyAsyncAwait(currency);
+  fetchCurrency(currency);
 }
 
 const setupEvents = () => {
