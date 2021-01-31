@@ -70,7 +70,14 @@ const handleSearchEvent = () => {
 
 const setupEvents = () => {
   const searchButton = document.querySelector('#search-button');
+  const searchInput = document.querySelector('#currency-input');
+
   searchButton.addEventListener('click', handleSearchEvent);
+  searchInput.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13) {
+      handleSearchEvent()
+    }
+  })
 }
 
 window.onload = () => {
