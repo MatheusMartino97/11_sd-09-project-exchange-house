@@ -17,10 +17,7 @@ const handleRates = (ratesData) => {
 
 const handleRatesBTC = (ratesData) => {
   const currencyList = document.querySelector('#currency-list');
-
   const entries = Object.entries(ratesData.bpi);
-
-  console.log(entries)
   
   entries.forEach((array) => {
     const [ currency, rate ] = array;
@@ -41,6 +38,7 @@ const fetchBTC = () => {
     .then((response) => response.json())
     .then((object) => {
       handleRatesBTC(object)
+      sortCurrencyList()
     })
     .catch((error) => {
       window.alert(error)
@@ -49,7 +47,7 @@ const fetchBTC = () => {
 
 const fetchCurrency = (currency) => {
   if (currency === 'BTC') {
-    fetchBTC()
+    fetchBTC();
   } else {
     const endpoint = `https://api.ratesapi.io/api/latest?base=${currency}`;
   
@@ -61,6 +59,7 @@ const fetchCurrency = (currency) => {
         }
         
         handleRates(object);
+        sortCurrencyList();
       })
       .catch((error) => {
         window.alert(error);
@@ -83,11 +82,10 @@ const fetchCurrencyAsyncAwait = async (currency) => {
     }
 
     handleRates(object);
+    sortCurrencyList();
   } catch (error) {
     window.alert(error);
-  }
-  
-  
+  } 
 }
 
 const clearList = () => {
@@ -95,12 +93,32 @@ const clearList = () => {
   currencyList.innerHTML = '';
 }
 
+const sortCurrencyList = () => {
+  const currencyList = document.querySelectorAll('#currency-list li')
+  const currencyNamesList = Object.entries(currencyList)
+    .map((currency) => {
+      return currency[1].innerHTML
+  })
+
+  const sortedCurrencyList = currencyNamesList.sort()
+
+  clearList();
+
+  for (let i of sortedCurrencyList) {
+    const currencyList = document.querySelector('#currency-list');
+    const li = document.createElement('li')
+
+    li.innerHTML = i
+
+    currencyList.appendChild(li)
+  }
+}
+
 const handleSearchEvent = () => {
   const searchInput = document.querySelector('#currency-input');
   const currency = searchInput.value.toUpperCase();
 
   clearList();
-
   fetchCurrency(currency);
 }
 
