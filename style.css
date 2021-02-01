@@ -97,6 +97,10 @@ ul li:nth-child(odd) {
   background-color: var(--secondary);
 }
 
+strong {
+  background-color: transparent;
+}
+
 ::-webkit-scrollbar {
   background-color: transparent;
 }
