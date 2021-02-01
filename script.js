@@ -125,6 +125,7 @@ const handleSearchEvent = () => {
 const setupEvents = () => {
   const searchButton = document.querySelector('#search-button');
   const searchInput = document.querySelector('#currency-input');
+  const clearListButton = document.querySelector('#clear-list')
 
   searchButton.addEventListener('click', handleSearchEvent);
   searchInput.addEventListener('keypress', (event) => {
@@ -132,6 +133,8 @@ const setupEvents = () => {
       handleSearchEvent()
     }
   })
+
+  clearListButton.addEventListener('click', clearList)
 }
 
 window.onload = () => {

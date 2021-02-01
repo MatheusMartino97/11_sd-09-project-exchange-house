@@ -67,7 +67,8 @@ button {
   border: none;
   transition: all 0.2s ease-in-out;
 }
-button:focus,
+
+#search-button:focus,
 button:hover {
   outline: none;
   transform: translate(0px, -5px);
@@ -112,4 +113,9 @@ ul li:nth-child(odd) {
 ::-webkit-scrollbar-thumb {
   background-color: var(--primary);
   border-radius: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
 }
